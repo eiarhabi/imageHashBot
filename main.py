@@ -21,25 +21,30 @@ def no(bot, update):
 
 def checkAvatar(bot, update):
     try:
-        id = update.message.new_chat_members[0].id
+        if update.message.new_chat_members != []:
+            id = update.message.new_chat_members[0].id
 
-        if id in bannedIDs:
-            bot.kick_chat_member(chat_id=update.message.chat_id, user_id=id)
-            bot.send_message(chat_id=update.message.chat_id, text='kicked')
+            if id in bannedIDs:
+                bot.kick_chat_member(
+                    chat_id=update.message.chat_id, user_id=id)
+                bot.send_message(chat_id=update.message.chat_id, text='kicked')
 
-        fileID = bot.get_user_profile_photos(id, limit=1).photos[0][-1].file_id
+            fileID = bot.get_user_profile_photos(
+                id, limit=1).photos[0][-1].file_id
 
-        if fileID in bannedfileIDs:
-            bot.kick_chat_member(chat_id=update.message.chat_id, user_id=id)
-            bot.send_message(chat_id=update.message.chat_id, text='kicked')
+            if fileID in bannedfileIDs:
+                bot.kick_chat_member(
+                    chat_id=update.message.chat_id, user_id=id)
+                bot.send_message(chat_id=update.message.chat_id, text='kicked')
 
-        link = bot.getFile(fileID).file_path
-        image = Image.open(urlopen(link))
-        hash = imagehash.whash(image)
+            link = bot.getFile(fileID).file_path
+            image = Image.open(urlopen(link))
+            hash = imagehash.whash(image)
 
-        if str(hash) in bannedHashs:
-            bot.kick_chat_member(chat_id=update.message.chat_id, user_id=id)
-            bot.send_message(chat_id=update.message.chat_id, text='kicked')
+            if str(hash) in bannedHashs:
+                bot.kick_chat_member(
+                    chat_id=update.message.chat_id, user_id=id)
+                bot.send_message(chat_id=update.message.chat_id, text='kicked')
 
     except Exception as e:
         bot.send_message(chat_id=update.message.chat_id,
